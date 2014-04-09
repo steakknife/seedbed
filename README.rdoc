@@ -10,8 +10,8 @@ Create db/seeds/ directory; Place your seed files in the directory.
 
 In seeds.rb 
 
-plant :seed_file_name
-plant :another_seed_file_name
+    SeedBed.plant "my/seedfile"
+    SeedBed.plant "another/seedfile"
 
 When rake db:seed is run all seed files invoked by 'plant' will be run. 
 
