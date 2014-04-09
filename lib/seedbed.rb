@@ -53,8 +53,8 @@ class SeedBed
       fil << "desc \"plants seeds for #{t}\" \n"
       
       fil << "task :#{t} => :environment do |tsk| \n"
-        fil << "puts tsk.scope[2..-1].join('/') \n"
-        fil << "SeedBed.plant( tsk.scope[2..-1].join('/') + '/' + '#{t}' )\n"
+        fil << "scope = tsk.scope.map(&:to_s).reverse \n"
+        fil << "SeedBed.plant( scope[2..-1].join('/') + '/#{t}' ) \n"
       fil << "end \n"
       unless b[t].empty?
         fil << "namespace :#{t} do \n"

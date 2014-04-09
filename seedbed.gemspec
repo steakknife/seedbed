@@ -28,19 +28,14 @@ Gem::Specification.new do |s|
     "lib/seedbed/railtie.rb",
     "lib/seedbed/system.rb",
     "lib/tasks/tasks.rake",
-    "seedbed.gemspec",
-    "test/helper.rb",
-    "test/test_seeds-ext.rb"
+    "seedbed.gemspec"
   ]
   s.homepage = %q{http://github.com/esmarkowski/seedbed}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.2}
   s.summary = %q{Quick DSL to allow easier management of seeds}
-  s.test_files = [
-    "test/helper.rb",
-    "test/test_seeds-ext.rb"
-  ]
+  s.test_files = []
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
