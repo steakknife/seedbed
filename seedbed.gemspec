@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/seedbed.rb",
     "lib/seedbed/railtie.rb",
-    "lib/seedbed/system.rb",
     "lib/tasks/tasks.rake",
     "seedbed.gemspec"
   ]

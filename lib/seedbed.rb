@@ -3,7 +3,7 @@ class SeedBed
   @@debug = true
   attr_accessor :path
   
-  def plant( file )
+  def self.plant( file )
     @path = "db/seeds"
     # load File.expand_path("#{@path}/../../Rakefile")
     yield self if block_given?
@@ -11,14 +11,6 @@ class SeedBed
     puts "Growing #{expanded_path}" if SeedBed.debug
     require expanded_path
     
-  end
-  
-  def self.message( msg )
-    puts ""
-    puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
-    puts msg
-    puts ""
-    puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
   end
   
   def self.debug=(d)
@@ -79,5 +71,4 @@ class SeedBed
   
 end
 
-require 'seedbed/system'
 require 'seedbed/railtie' if defined?(Rails)
