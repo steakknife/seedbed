@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 group :development do
-  gem "shoulda", ">= 0"
+  # gem "shoulda", ">= 0"
   gem "bundler"
-  gem "jeweler"
+  # gem "jeweler"
 end
