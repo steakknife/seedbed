@@ -1,13 +1,7 @@
 class SeedBed
-  module Seedpath #redefine as needed if non standard path
-    def default_path() "db/seeds"; end
-  end
-
-  include Seedpath
-
   attr_accessor :path, :debug
 
-  def initialize(path = default_path)
+  def initialize(path = 'db/seeds')
     @path = path
     @debug = true
   end
