@@ -46,13 +46,15 @@ class SeedBed
   end
 
   def add_tasks(seeds)
-    seeds.keys.each do |name|
-      Rake.application.last_description = "plants seeds for #{name}"
-      Rake.application.define_task(Rake::Task, name.to_sym => :environment) do |task|
-        scope = task.scope.map(&:to_s).reverse[2..-1].concat([name])
-        plant scope.join('/')
-        nested_seeds = seeds[name]
-        unless nested_seeds.empty?
+    seeds.each do |name, nested_seeds|
+      if nested_seeds.empty?
+        Rake.application.last_description = "Plants seeds for #{name}"
+        Rake.application.define_task(Rake::Task, name.to_sym => :environment) do |task|
+          scope = task.scope.to_a.unshift(name) and scope.pop(2)
+          plant scope.reverse.join('/')
+        end
+      else
+        Rake.application.in_namespace name do
           add_tasks(nested_seeds)
         end
       end
@@ -60,5 +62,5 @@ class SeedBed
   end
 end
 
-# require 'rails'
-# require 'seedbed/railtie' if defined?(Rails)
+require 'rails'
+require 'seedbed/railtie' if defined?(Rails)
