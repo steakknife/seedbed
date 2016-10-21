@@ -24,10 +24,10 @@ gem 'seedbed', github: 'steakknife/seedbed'
 1. `mkdir -p db/seeds`
 1.  Place `*.rb` seed files in this directory.
 1.  In `seeds.rb`:
-      ```ruby
-      SeedBed.plant "my/seedfile"
-      SeedBed.plant "another/seedfile"
-      ```
+```ruby
+SeedBed.plant "my/seedfile"
+SeedBed.plant "another/seedfile"
+```
 1. When `rake db:seed` is run, all seed files invoked by `plant` will be run.
 
 ## Automatic Rake Tasks
