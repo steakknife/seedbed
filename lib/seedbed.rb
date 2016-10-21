@@ -1,74 +1,66 @@
-require 'rails'
 class SeedBed
-  @@debug = true
-  attr_accessor :path
+  attr_accessor :path, :debug
+
+  def initialize(path = 'db/seeds')
+    @path = path
+    @debug = true
+  end
   
-  def self.plant( file )
-    @path = "db/seeds"
-    # load File.expand_path("#{@path}/../../Rakefile")
+  def plant(file)
     yield self if block_given?
-    expanded_path = File.expand_path("#{@path}/#{file.to_s}.rb")
-    puts "Growing #{expanded_path}" if SeedBed.debug
+    expanded_path = File.expand_path("#{path}/#{file.to_s}.rb")
+    puts "Growing #{expanded_path}" if debug
     require expanded_path
-    
   end
   
-  def self.debug=(d)
-    @@debug = d
-  end
-  
-  def self.debug
-    @@debug
-  end
-  
-  def self.available_seeds
-    @path = "db/seeds"
-    basedir = File.join( File.expand_path(@path), "**" , "*.rb")
-    files = Dir.glob( basedir ).collect{|d| d.split( File.expand_path(@path) ).last.split('/')[1..-1].collect{|s| s.split('.rb').first.to_sym} }
+  def available_seeds
+    basedir = File.join(expanded_seed_path, "**" , "*.rb")
+    files = Dir.glob(basedir).collect{|d| d.split(expanded_seed_path).last.split('/')[1..-1].collect{|s| s.split('.rb').first.to_sym} }
     namespaces = Hash.new{ |h,k| h[k] = Hash.new &h.default_proc }
     files.each do |path|
       sub = namespaces
-      path.each{ |dir| sub[dir]; sub = sub[dir] }
+      path.each do |dir|
+        sub[dir]
+        sub = sub[dir]
+      end
     end
     namespaces
   end
   
-  def self.tasks
-    build_tree( SeedBed.available_seeds )
+  def tasks(seeds = available_seeds)
+    add_namespaced_tasks(seeds)
   end
   
-  private 
-  
-  def self.build_tree(b)
-    fil = ""
-    b.keys.each do |t|
-      fil << "desc \"plants seeds for #{t}\" \n"
-      
-      fil << "task :#{t} => :environment do |tsk| \n"
-        fil << "scope = tsk.scope.map(&:to_s).reverse \n"
-        fil << "SeedBed.plant( scope[2..-1].join('/') + '/#{t}' ) \n"
-      fil << "end \n"
-      unless b[t].empty?
-        fil << "namespace :#{t} do \n"
-          fil << build_tree( b[t]  )
-          fil << "\n"
-        fil << "end \n"
+  private
+
+  def expanded_seed_path
+    File.expand_path(path)
+  end
+
+  def add_namespaced_tasks(seeds)
+    Rake.application.in_namespace :db do
+      Rake.application.in_namespace :seed do
+        add_tasks(seeds)
       end
     end
-    fil
-    # branch.keys.reject{|k| branch[k].empty? }.each do |ns|
-    #   namespace ns do 
-    #     branch[ns].keys.each do |t|
-    #       desc "Runs seed for #{t}"
-    #       task t do 
-    #         puts "task #{t}"
-    #       end
-    #     end
-    #   end
-    # end
   end
-  
-  
+
+  def add_tasks(seeds)
+    seeds.each do |name, nested_seeds|
+      if nested_seeds.empty?
+        Rake.application.last_description = "Plants seeds for #{name}"
+        Rake.application.define_task(Rake::Task, name.to_sym => :environment) do |task|
+          scope = task.scope.to_a.unshift(name) and scope.pop(2)
+          plant scope.reverse.join('/')
+        end
+      else
+        Rake.application.in_namespace name do
+          add_tasks(nested_seeds)
+        end
+      end
+    end
+  end
 end
 
+require 'rails'
 require 'seedbed/railtie' if defined?(Rails)
