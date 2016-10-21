@@ -24,7 +24,7 @@ module SeedBed
       files = Dir.glob(basedir).collect do |d|
         d.split(expanded_seed_path)
           .last
-          .split('/')[1..-1]
+          .split(File::SEPARATOR)[1..-1]
           .collect { |s| s.split('.rb').first.to_sym }
       end
       namespaces = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
@@ -62,7 +62,7 @@ module SeedBed
           Rake.application.last_description = "Plants seeds for #{name}"
           Rake.application.define_task(Rake::Task, name.to_sym => :environment) do |task|
             scope = task.scope.to_a.unshift(name)
-            plant scope[-2..-1].reverse.join('/')
+            plant scope[0..-3].reverse.join(File::SEPARATOR)
           end
         else
           Rake.application.in_namespace name do
