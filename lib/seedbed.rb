@@ -61,8 +61,8 @@ module SeedBed
         if nested_seeds.empty?
           Rake.application.last_description = "Plants seeds for #{name}"
           Rake.application.define_task(Rake::Task, name.to_sym => :environment) do |task|
-            scope = task.scope.to_a.unshift(name) && scope.pop(2)
-            plant scope.reverse.join('/')
+            scope = task.scope.to_a.unshift(name)
+            plant scope[-2..-1].reverse.join('/')
           end
         else
           Rake.application.in_namespace name do
