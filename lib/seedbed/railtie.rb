@@ -1,10 +1,8 @@
 require 'seedbed'
 require 'rails'
 
-class SeedBed
+module SeedBed
   class Railtie < Rails::Railtie
-    rake_tasks do
-      SeedBed.new.tasks
-    end
+    rake_tasks { SeedBed.tasks }
   end
 end

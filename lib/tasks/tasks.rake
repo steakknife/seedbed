@@ -1,1 +1,1 @@
-SeedBed.new.tasks
+SeedBed.tasks

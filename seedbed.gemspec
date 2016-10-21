@@ -1,31 +1,17 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = %q{seedbed}
-  s.version = "1.2.0"
-
+  s.version = IO.readlines("VERSION")[0].strip
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Spencer Markowski", "The Able Few", "David Somers"]
-  s.date = %q{2014-04-09}
+  s.authors = ["Barry Allard", "Spencer Markowski", "The Able Few", "David Somers"]
   s.description = %q{Manage seeds in individual files in db/seeds/}
-  s.email = %q{spencer.markowski@gmail.com}
+  s.email = ["barry dot allard at gmail dot com", "spencer.markowski@gmail.com"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
-  s.files = [
-    ".document",
-    "Gemfile",
-    "Gemfile.lock",
-    "LICENSE.txt",
-    "README.rdoc",
-    "Rakefile",
-    "VERSION",
-    "lib/seedbed.rb",
-    "lib/seedbed/railtie.rb",
-    "lib/tasks/tasks.rake",
-    "seedbed.gemspec"
-  ]
-  s.homepage = %q{http://github.com/esmarkowski/seedbed}
+  s.files = `git ls-files -z`.split("\0")
+  s.homepage = %q{https://github.com/steakknife/seedbed}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.2}
@@ -33,4 +19,3 @@ Gem::Specification.new do |s|
   s.test_files = []
   s.add_development_dependency "bundler"
 end
-
